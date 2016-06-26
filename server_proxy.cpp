@@ -13,6 +13,7 @@ public:
         while (true) {
             RequestDescriptor descriptor = server.getRequest();
             std::thread thread(&ServerProxy::serve, this, descriptor);
+            thread.detach();
         }
     }
 

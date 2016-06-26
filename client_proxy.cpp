@@ -16,6 +16,7 @@ public:
         while (true) {
             int client_fd = server.listen();
             std::thread serve_thread(&ClientProxy::serve, this, client_fd);
+            serve_thread.detach();
         }
     }
 
