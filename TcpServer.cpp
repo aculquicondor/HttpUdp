@@ -55,7 +55,7 @@ std::string TcpServer::getRequest(int clientFd) const {
         std::size_t colon = line.find(':');
         std::string header = line.substr(0, colon);
         if (lower(header) == "content-length") {
-            std::stringstream ss(line.substr(colon+1));
+            std::stringstream ss(line.substr(colon + 1));
             ss >> contentLength;
         }
     } while (line != "\n" and line != "\r\n");
