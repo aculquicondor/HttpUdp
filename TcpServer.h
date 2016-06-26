@@ -1,7 +1,14 @@
 #ifndef HTTP_UDP_TCPSERVER_H
 #define HTTP_UDP_TCPSERVER_H
 
+#include <cstdlib>
+#include <cstring>
+#include <sstream>
 #include <string>
+
+#include <arpa/inet.h>
+#include <netinet/in.h>
+#include <unistd.h>
 
 
 class TcpServer {
@@ -16,8 +23,16 @@ public:
 
     void sendResponse(int clientFd, std::string response) const;
 
+    int getSocketFd() const {
+        return socketFd;
+    }
+
 private:
-    int socket_fd;
+    std::string getLine(int fd) const;
+    std::string lower(std::string str) const;
+
+    int socketFd;
+    static const uint16_t port;
 };
 
 
