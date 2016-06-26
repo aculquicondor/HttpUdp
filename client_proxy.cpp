@@ -38,6 +38,9 @@ private:
 
 
 int main() {
+    UdpClient udp("127.0.0.1");
+    udp.sendRequest("HOLA");
+    return 1;
     ClientProxy clientProxy;
     clientProxy.run();
     return 0;
