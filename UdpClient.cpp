@@ -30,7 +30,11 @@ UdpClient::~UdpClient() {
 
 void UdpClient::sendRequest(std::string request) const {
     std::cout<<"Working"<<std::endl;
-
+    std::string first = std::to_string(request.size());
+    if(request.size() != sendto(this->sock, first.c_str(), first.size(), 0,
+                                (struct sockaddr *)&this->addr, sizeof(this->addr))) {
+        return;
+    }
     if(request.size() != sendto(this->sock, request.c_str(), request.size(), 0,
                                 (struct sockaddr *)&this->addr, sizeof(this->addr))) {
         return;
@@ -40,7 +44,23 @@ void UdpClient::sendRequest(std::string request) const {
 }
 
 std::string UdpClient::getResponse() const {
-    return "";
+    int received(0);
+    int addrLength(sizeof(this->addr));
+    char buffer_size[10] = {0};
+    if(recvfrom(this->sock, buffer_size, 10, 0, (sockaddr *)&this->addr, (socklen_t*)&addrLength) != 10) {
+        perror("Mismatch in number of bytes received");
+    }
+
+    std::string bs(buffer_size);
+
+    int buff_size = std::stoi(bs);
+    std::cout<<buff_size<<std::endl;
+    std::string response(buff_size+1, 0);
+    if(recvfrom(this->sock, &response[0], buff_size, 0, (sockaddr *)&this->addr, (socklen_t*)&addrLength)!= buff_size) {
+        perror("Mismatch in number of bytes received");
+    }
+    std::cout<<response;
+    return response;
 }
 
 

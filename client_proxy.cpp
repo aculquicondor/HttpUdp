@@ -82,9 +82,6 @@ void sig_handler(int sigNo) {
 
 
 int main() {
-    UdpClient udp("127.0.0.1");
-    udp.sendRequest("HOLA");
-    return 1;
     ClientProxy clientProxy;
 
     socketFd = clientProxy.getServerSocketFd();
@@ -92,5 +89,5 @@ int main() {
     signal(SIGTERM, sig_handler);
 
     clientProxy.run();
-    return 0;
+    return 1;
 }
