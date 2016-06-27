@@ -43,7 +43,7 @@ RequestDescriptor UdpServer::getRequest() {
 std::string getResponseLength(std::string &response){
 
     std::stringstream stream;
-    stream << std::setfill('0') << std::setw(4) << response.size();
+    stream << std::setfill('0') << std::setw(10) << response.size();
 
     return stream.str();
 
