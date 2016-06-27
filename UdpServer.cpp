@@ -35,7 +35,7 @@ RequestDescriptor UdpServer::getRequest() {
     buffer = std::string(buffer_char, message_length);
     recvfrom(udp_socket, &buffer[0], buffer.size(), 0, (sockaddr *)&remote_addr, &addr_len);
     request.request = buffer;
-    request.ip = std::string(inet_ntoa(remote_addr.sin_addr));
+    request.connection = remote_addr;
 
     return request;
 }
@@ -49,8 +49,8 @@ std::string getResponseLength(std::string &response){
 
 }
 
-void UdpServer::sendResponse(std::string ip, std::string response) {
+void UdpServer::sendResponse(sockaddr_in connection, std::string response) {
 
-    sendto(udp_socket, getResponseLength(response).c_str(), getResponseLength(response).size(), 0, (sockaddr *)&remote_addr, addr_len);
-    sendto(udp_socket, response.c_str(), response.size(), 0, (sockaddr *)&remote_addr, addr_len);
+    sendto(udp_socket, getResponseLength(response).c_str(), getResponseLength(response).size(), 0, (sockaddr *)&connection, addr_len);
+    sendto(udp_socket, response.c_str(), response.size(), 0, (sockaddr *)&connection, addr_len);
 }

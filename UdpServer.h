@@ -11,7 +11,8 @@
 
 
 struct RequestDescriptor {
-    std::string ip, request;
+    sockaddr_in connection;
+    std::string request;
 };
 
 
@@ -23,7 +24,7 @@ public:
 
     RequestDescriptor getRequest();
 
-    void sendResponse(std::string ip, std::string response);
+    void sendResponse(sockaddr_in connection, std::string response);
 
 private:
 
