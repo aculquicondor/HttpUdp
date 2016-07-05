@@ -46,15 +46,11 @@ int TcpServer::listen() const {
     return client_fd;
 }
 
-#include <iostream>
 std::string TcpServer::getRequest(int clientFd) const {
-    std::string request = httpRead(clientFd);
-    std::cout << request;
-    return request;
+    return httpRead(clientFd);
 }
 
 void TcpServer::sendResponse(int clientFd, std::string response) const {
-    std::cout<<"writing:"<<response<<std::endl;
     write(clientFd, response.c_str(), response.size());
     shutdown(clientFd, SHUT_RDWR);
     close(clientFd);

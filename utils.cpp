@@ -33,6 +33,14 @@ std::size_t from_hexadecimal(std::string str) {
 }
 
 
+std::string to_10_digit_string(std::size_t size) {
+    std::stringstream ss;
+    ss << std::setfill('0') << std::setw(10);
+    ss << size;
+    return ss.str();
+}
+
+
 std::string httpRead(int socket) {
     std::string content, line;
     std::size_t contentLength = 0;
@@ -51,7 +59,6 @@ std::string httpRead(int socket) {
             }
         }
     } while (line != "\n" and line != "\r\n");
-    content += line;
 
     if (contentLength > 0) {
         line.resize(contentLength);

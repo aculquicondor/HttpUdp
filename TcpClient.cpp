@@ -24,8 +24,6 @@ void TcpClient::sendRequest(std::string request) {
         perror("Send failed : ");
         return;
     }
-
-    std::cout<<"Working done"<<std::endl;
 }
 
 std::string TcpClient::getResponse() {
