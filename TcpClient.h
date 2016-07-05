@@ -2,7 +2,9 @@
 #define HTTP_UDP_TCPCLIENT_H
 
 #include <string>
-
+#include <cstring>
+#include <iostream>
+#include <arpa/inet.h>
 
 class TcpClient {
 public:
@@ -15,8 +17,10 @@ public:
     std::string getResponse();
 
 private:
-    int socket_fd;
-
+    int sock;
+    int server_port;
+    struct sockaddr_in addr;
+    std::string server_ip;
 };
 
 
