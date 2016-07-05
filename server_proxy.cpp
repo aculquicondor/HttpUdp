@@ -23,7 +23,7 @@ private:
         TcpClient client;
         client.sendRequest(descriptor.request);
         std::string response = client.getResponse();
-        server.sendResponse(descriptor.ip, response);
+        server.sendResponse(descriptor.connection, response);
     }
 
     UdpServer server;
