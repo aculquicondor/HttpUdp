@@ -2,7 +2,7 @@
 
 
 TcpClient::TcpClient() {
-    this->server_port = 8080;
+    this->server_port = 5000;
     this->server_ip = "127.0.0.1";
 
     this->sock = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP);
@@ -15,17 +15,11 @@ TcpClient::TcpClient() {
 }
 
 TcpClient::~TcpClient() {
-
+    shutdown(sock, SHUT_RDWR);
+    close(sock);
 }
 
 void TcpClient::sendRequest(std::string request) {
-    std::cout<<"Working"<<std::endl;
-    std::string first = std::to_string(request.size());
-
-    if (send(this->sock, first.c_str(), first.size(), 0) < 0) {
-        perror("Send failed : ");
-        return;
-    }
     if (send(this->sock, request.c_str(), request.size(), 0) < 0) {
         perror("Send failed : ");
         return;
@@ -35,19 +29,6 @@ void TcpClient::sendRequest(std::string request) {
 }
 
 std::string TcpClient::getResponse() {
-    char buffer_size[10] = {0};
-    if(recv(this->sock, buffer_size, 10, 0) < 0) {
-        perror("Mismatch in number of bytes received");
-    }
-
-    std::string bs(buffer_size);
-
-    int buff_size = std::stoi(bs);
-    std::cout<<buff_size<<std::endl;
-    std::string response(buff_size+1, 0);
-    if(recv(this->sock, &response[0], buff_size, 0) < 0) {
-        perror("Mismatch in number of bytes received");
-    }
-    std::cout<<response;
-    return response;
+    return httpRead(sock);
 }
+

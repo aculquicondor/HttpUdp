@@ -10,6 +10,8 @@
 #include <netinet/in.h>
 #include <unistd.h>
 
+#include "utils.h"
+
 
 class TcpServer {
 public:
@@ -28,9 +30,6 @@ public:
     }
 
 private:
-    std::string getLine(int fd) const;
-    std::string lower(std::string str) const;
-
     int socketFd;
     static const uint16_t port;
 };

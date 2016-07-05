@@ -1,10 +1,15 @@
 #ifndef HTTP_UDP_TCPCLIENT_H
 #define HTTP_UDP_TCPCLIENT_H
 
-#include <string>
 #include <cstring>
+#include <string>
 #include <iostream>
+
 #include <arpa/inet.h>
+#include <unistd.h>
+
+#include "utils.h"
+
 
 class TcpClient {
 public:
@@ -18,7 +23,7 @@ public:
 
 private:
     int sock;
-    int server_port;
+    uint16_t server_port;
     struct sockaddr_in addr;
     std::string server_ip;
 };
