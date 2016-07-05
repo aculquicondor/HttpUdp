@@ -26,13 +26,11 @@ UdpServer::~UdpServer() {
 
 RequestDescriptor UdpServer::getRequest() {
 
-    const char* buffer_char;
     RequestDescriptor request = RequestDescriptor();
-
-    std::string buffer = std::string(buffer_char, 10);
+    std::string buffer = std::string(10, '0');
     recvfrom(udp_socket, &buffer[0], buffer.size(), 0, (sockaddr *)&remote_addr, &addr_len);
     int message_length = stoi(buffer);
-    buffer = std::string(buffer_char, message_length);
+    buffer = std::string(message_length, '0');
     recvfrom(udp_socket, &buffer[0], buffer.size(), 0, (sockaddr *)&remote_addr, &addr_len);
     request.request = buffer;
     request.connection = remote_addr;
