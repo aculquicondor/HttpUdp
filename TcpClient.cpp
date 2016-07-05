@@ -26,7 +26,7 @@ void TcpClient::sendRequest(std::string request) {
         perror("Send failed : ");
         return;
     }
-    if (send(this->sock, first.c_str(), first.size(), 0) < 0) {
+    if (send(this->sock, request.c_str(), request.size(), 0) < 0) {
         perror("Send failed : ");
         return;
     }
