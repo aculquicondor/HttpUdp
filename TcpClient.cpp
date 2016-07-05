@@ -20,12 +20,7 @@ TcpClient::~TcpClient() {
 
 void TcpClient::sendRequest(std::string request) {
     std::cout<<"Working"<<std::endl;
-    std::string first = std::to_string(request.size());
 
-    if (send(this->sock, first.c_str(), first.size(), 0) < 0) {
-        perror("Send failed : ");
-        return;
-    }
     if (send(this->sock, request.c_str(), request.size(), 0) < 0) {
         perror("Send failed : ");
         return;
@@ -35,19 +30,24 @@ void TcpClient::sendRequest(std::string request) {
 }
 
 std::string TcpClient::getResponse() {
-    char buffer_size[10] = {0};
-    if(recv(this->sock, buffer_size, 10, 0) < 0) {
-        perror("Mismatch in number of bytes received");
-    }
+    std::string line;
+    std::string response;
 
-    std::string bs(buffer_size);
+    do{
+        line = this->getLine();
+        response += line;
+    }while(line != "\n" and line != "\r\n");
 
-    int buff_size = std::stoi(bs);
-    std::cout<<buff_size<<std::endl;
-    std::string response(buff_size+1, 0);
-    if(recv(this->sock, &response[0], buff_size, 0) < 0) {
-        perror("Mismatch in number of bytes received");
-    }
-    std::cout<<response;
     return response;
+}
+
+std::string TcpClient::getLine() const {
+    std::string line;
+    char c;
+    while (recv(this->sock, &c, 1, 0) > 0) {
+        line.push_back(c);
+        if (c == '\n')
+            break;
+    }
+    return line;
 }

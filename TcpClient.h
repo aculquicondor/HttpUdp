@@ -6,6 +6,8 @@
 #include <iostream>
 #include <arpa/inet.h>
 
+#define buff_size 2048
+
 class TcpClient {
 public:
     explicit TcpClient();
@@ -21,6 +23,8 @@ private:
     int server_port;
     struct sockaddr_in addr;
     std::string server_ip;
+
+    std::string getLine() const;
 };
 
 
