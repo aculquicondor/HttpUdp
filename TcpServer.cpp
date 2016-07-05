@@ -1,7 +1,7 @@
 #include "TcpServer.h"
+#include <iostream>
 
-
-const uint16_t TcpServer::port = 8000;
+const uint16_t TcpServer::port = 8080;
 
 
 TcpServer::TcpServer() {
@@ -54,6 +54,7 @@ std::string TcpServer::getRequest(int clientFd) const {
 }
 
 void TcpServer::sendResponse(int clientFd, std::string response) const {
+    std::cout<<"writing:"<<response<<std::endl;
     write(clientFd, response.c_str(), response.size());
     shutdown(clientFd, SHUT_RDWR);
     close(clientFd);

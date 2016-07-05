@@ -89,5 +89,5 @@ int main() {
     signal(SIGTERM, sig_handler);
 
     clientProxy.run();
-    return 0;
+    return 1;
 }
