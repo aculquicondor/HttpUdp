@@ -29,26 +29,20 @@ RequestDescriptor UdpServer::getRequest() {
     RequestDescriptor request = RequestDescriptor();
     std::string buffer = std::string(10, '0');
     recvfrom(udp_socket, &buffer[0], buffer.size(), 0, (sockaddr *)&remote_addr, &addr_len);
-    int message_length = stoi(buffer);
-    buffer = std::string(message_length, '0');
+    std::size_t message_length = stoi(buffer);
+
+    buffer.resize(message_length);
     recvfrom(udp_socket, &buffer[0], buffer.size(), 0, (sockaddr *)&remote_addr, &addr_len);
     request.request = buffer;
     request.connection = remote_addr;
 
+    std::cout << "Received request: " << request.request.substr(0, 100) << "..." << std::endl << std::endl;
     return request;
 }
 
-std::string getResponseLength(std::string &response){
-
-    std::stringstream stream;
-    stream << std::setfill('0') << std::setw(10) << response.size();
-
-    return stream.str();
-
-}
-
 void UdpServer::sendResponse(sockaddr_in connection, std::string response) {
-
-    sendto(udp_socket, getResponseLength(response).c_str(), getResponseLength(response).size(), 0, (sockaddr *)&connection, addr_len);
+    std::string first = to_10_digit_string(response.size());
+    sendto(udp_socket, first.c_str(), first.size(), 0, (sockaddr *)&connection, addr_len);
     sendto(udp_socket, response.c_str(), response.size(), 0, (sockaddr *)&connection, addr_len);
+    std::cout << "Sent response: " << response.substr(0, 100) << "..." << std::endl << std::endl;
 }

@@ -47,50 +47,11 @@ int TcpServer::listen() const {
 }
 
 std::string TcpServer::getRequest(int clientFd) const {
-    std::string request, line;
-    std::size_t contentLength = 0;
-    do {
-        line = getLine(clientFd);
-        request += line;
-        std::size_t colon = line.find(':');
-        std::string header = line.substr(0, colon);
-        if (lower(header) == "content-length") {
-            std::stringstream ss(line.substr(colon + 1));
-            ss >> contentLength;
-        }
-    } while (line != "\n" and line != "\r\n");
-    request += line;
-    if (contentLength > 0) {
-        line.resize(contentLength);
-        read(clientFd, &line[0], contentLength);
-    }
-    return request;
+    return httpRead(clientFd);
 }
 
 void TcpServer::sendResponse(int clientFd, std::string response) const {
-    std::cout<<"writing:"<<response<<std::endl;
     write(clientFd, response.c_str(), response.size());
+    shutdown(clientFd, SHUT_RDWR);
+    close(clientFd);
 }
-
-
-std::string TcpServer::getLine(int fd) const {
-    std::string line;
-    char c;
-    while (read(fd, &c, 1) > 0) {
-        line.push_back(c);
-        if (c == '\n')
-            break;
-    }
-    return line;
-}
-
-
-std::string TcpServer::lower(std::string str) const {
-    for (char &c : str) {
-        if (c >= 'A' && c <= 'Z')
-            c += 'a' - 'A';
-    }
-    return str;
-}
-
-

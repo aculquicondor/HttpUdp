@@ -2,7 +2,10 @@
 #define HTTP_UDP_UDPCLIENT_H
 
 #include <string>
+
 #include <netinet/in.h>
+
+#include "utils.h"
 
 
 class UdpClient {
