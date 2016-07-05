@@ -1,10 +1,18 @@
 #ifndef HTTP_UDP_UDPSERVER_H
 #define HTTP_UDP_UDPSERVER_H
 
-#include <string>
+#include <cstring>
+#include <unistd.h>
+#include <sstream>
+#include <iomanip>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+
 
 struct RequestDescriptor {
-    std::string ip, request;
+    sockaddr_in connection;
+    std::string request;
 };
 
 
@@ -16,7 +24,14 @@ public:
 
     RequestDescriptor getRequest();
 
-    void sendResponse(std::string ip, std::string response);
+    void sendResponse(sockaddr_in connection, std::string response);
+
+private:
+
+    int udp_socket;
+    sockaddr_in remote_addr;
+    socklen_t addr_len;
+
 };
 
 
