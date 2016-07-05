@@ -2,7 +2,11 @@
 #define HTTP_UDP_TCPCLIENT_H
 
 #include <string>
+#include <cstring>
+#include <iostream>
+#include <arpa/inet.h>
 
+#define buff_size 2048
 
 class TcpClient {
 public:
@@ -15,8 +19,12 @@ public:
     std::string getResponse();
 
 private:
-    int socket_fd;
+    int sock;
+    int server_port;
+    struct sockaddr_in addr;
+    std::string server_ip;
 
+    std::string getLine() const;
 };
 
 
